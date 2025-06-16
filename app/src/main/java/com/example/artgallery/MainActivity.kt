@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -128,16 +131,16 @@ fun ArtGalleryView(imageId: Int,
                    nextImageId:()->Unit,
                    prevImageId:()->Unit,
                    modifier: Modifier){
-    Column(modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+    Column(modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally){
         Image(
             painter = painterResource(imageId),
             contentDescription = null,
-            modifier = modifier.size(400.dp)
-                .fillMaxSize()
+            modifier = modifier
+                .height(250.dp).fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(.10.dp))
         Text(
             text = stringResource(messagId),
             modifier = modifier.padding(horizontal = 16.dp)
@@ -145,7 +148,8 @@ fun ArtGalleryView(imageId: Int,
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)){
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ){
 
             Button(onClick = prevImageId) {
                 Text(stringResource(R.string.prev_button))

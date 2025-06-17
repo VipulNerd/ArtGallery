@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ArtGallery</string>
     <string name="title">Art Gallery</string>
+    <string name="login_page">LogIn</string>
     <string name="next_button">Next Image</string>
     <string name="prev_button">Previous Image</string>
     <string name="image1_disc">Art of Human</string>

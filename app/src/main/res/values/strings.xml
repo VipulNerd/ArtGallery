@@ -6,4 +6,6 @@
     <string name="image1_disc">Art of Human</string>
     <string name="image2_disc">Art of Flower</string>
     <string name="image3_disc">Art of Fort</string>
+    <string name="login_email">Email</string>
+    <string name="login_pass">Password</string>
 </resources>

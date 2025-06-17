@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "310892373519",
+    "project_id": "artgallery-b6d6f",
+    "storage_bucket": "artgallery-b6d6f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310892373519:android:96a6e2d0a10ac3de5a257a",
+        "android_client_info": {
+          "package_name": "com.example.artgallery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2abEk_W49tR6M29cepHG789ViADzt-xA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

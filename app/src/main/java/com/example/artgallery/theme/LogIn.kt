@@ -1,48 +1,61 @@
 package com.example.artgallery.theme
 
 
+import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.artgallery.R
-import com.example.artgallery.ui.theme.ArtGalleryTheme
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogInPage() {
+fun LogInPage(navController: NavController, authViewModel: AuthViewModel) {
     var emailInput by remember { mutableStateOf("") }
     var passwordInput by remember { mutableStateOf("") }
+    val authState = authViewModel.authState
+    val context = LocalContext.current
+
+    LaunchedEffect(authState.value) {
+        when(authState.value){
+            is AuthenticationState.Authenticate -> navController.navigate(Screen.MainScreen)
+            is AuthenticationState.Error -> Toast.makeText(context,(authState.value as AuthenticationState.Error).message,
+                Toast.LENGTH_SHORT).show()
+            else -> Unit
+        }
+    }
 
     Scaffold (
         topBar ={
@@ -89,6 +102,14 @@ fun LogInPage() {
             )
 
             Spacer(modifier = Modifier.padding(20.dp))
+
+            ElevatedButton(onClick = {authViewModel.login(emailInput, passwordInput)},
+                enabled = authState.value != AuthenticationState.Loading) {
+                Text("Log In")
+            }
+            TextButton(onClick = {navController.navigate(Screen.Signup.rout)}) {
+                Text("Don't Have account, Sign Up")
+            }
         }
     }
 
@@ -128,12 +149,4 @@ fun PasswordEntry(
         singleLine = true,
         modifier = modifier
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LogInPreview() {
-    ArtGalleryTheme {
-        LogInPage()
-    }
 }

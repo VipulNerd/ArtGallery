@@ -1,5 +1,6 @@
 package com.example.artgallery.theme
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,25 +19,35 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.artgallery.R
-import com.example.artgallery.ui.theme.ArtGalleryTheme
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtGalleryLayout() {
-    var currentImage by remember { mutableStateOf(1) }
+fun ArtGalleryLayout(navController: NavController, authViewModel: AuthViewModel) {
+    var currentImage by remember { mutableIntStateOf(1) }
+    val authState = authViewModel.authState
 
+    LaunchedEffect(authState.value) {
+        when(authState.value){
+            is AuthenticationState.Unauthenticate -> navController.navigate(Screen.Login)
+            else -> Unit
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -52,6 +63,7 @@ fun ArtGalleryLayout() {
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
+
             )
         }
     ) { innerPadding ->
@@ -64,7 +76,7 @@ fun ArtGalleryLayout() {
                 1 -> {
                     ArtGalleryView(
                         imageId = (R.drawable.image_),
-                        messagId = (R.string.image1_disc),
+                        messageId = (R.string.image1_disc),
                         nextImageId = {
                             currentImage += 1
                         },
@@ -76,7 +88,7 @@ fun ArtGalleryLayout() {
                 2 -> {
                     ArtGalleryView(
                         imageId = (R.drawable.image2),
-                        messagId = (R.string.image2_disc),
+                        messageId = (R.string.image2_disc),
                         nextImageId = {
                             currentImage += 1
                         },
@@ -88,7 +100,7 @@ fun ArtGalleryLayout() {
                 3 -> {
                     ArtGalleryView(
                         imageId = (R.drawable.iamge3),
-                        messagId = (R.string.image3_disc),
+                        messageId = (R.string.image3_disc),
                         nextImageId = {},
                         prevImageId = { if (currentImage > 1) currentImage -= 1 },
                         modifier = Modifier.padding(16.dp)
@@ -103,7 +115,7 @@ fun ArtGalleryLayout() {
 
 @Composable
 fun ArtGalleryView(imageId: Int,
-                   messagId:Int,
+                   messageId:Int,
                    nextImageId:()->Unit,
                    prevImageId:()->Unit,
                    modifier: Modifier){
@@ -118,7 +130,7 @@ fun ArtGalleryView(imageId: Int,
         )
         Spacer(modifier = Modifier.height(.10.dp))
         Text(
-            text = stringResource(messagId),
+            text = stringResource(messageId),
             modifier = modifier.padding(horizontal = 16.dp)
         )
 
@@ -143,10 +155,3 @@ fun ArtGalleryView(imageId: Int,
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ArtGalleryTheme {
-        ArtGalleryLayout()
-    }
-}

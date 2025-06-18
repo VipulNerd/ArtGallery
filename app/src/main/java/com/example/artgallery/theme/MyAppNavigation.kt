@@ -4,28 +4,27 @@ import androidx.compose.runtime.Composable
 
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun MyAppNavigation(authViewModel: AuthViewModel){
+fun MyAppNavigation(){
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.Login.rout) {
+    NavHost(navController = navController, startDestination = Screen.Login.rout, builder =  {
         composable(Screen.Login.rout){
-            LogInPage(navController,authViewModel)
+            LogInPage(
+                navController
+            )
         }
         composable(Screen.Signup.rout) {
             SignUpPage(
-                navController,
-                authViewModel
+                navController
             )
         }
         composable(Screen.MainScreen.rout){
             ArtGalleryLayout(
-                navController,
-                authViewModel
+                navController
             )
         }
-    }
+    })
 }

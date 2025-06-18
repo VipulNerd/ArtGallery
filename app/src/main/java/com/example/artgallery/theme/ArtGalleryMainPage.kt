@@ -19,8 +19,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+
 import androidx.compose.runtime.getValue
+
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,16 +39,8 @@ import com.example.artgallery.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtGalleryLayout(navController: NavController, authViewModel: AuthViewModel) {
+fun ArtGalleryLayout(navController: NavController) {
     var currentImage by remember { mutableIntStateOf(1) }
-    val authState = authViewModel.authState
-
-    LaunchedEffect(authState.value) {
-        when(authState.value){
-            is AuthenticationState.Unauthenticate -> navController.navigate(Screen.Login)
-            else -> Unit
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -58,6 +51,14 @@ fun ArtGalleryLayout(navController: NavController, authViewModel: AuthViewModel)
                         style = MaterialTheme.typography.titleLarge, // Use a large text style
                         textAlign = TextAlign.Center
                     )
+                },
+                navigationIcon = {
+                    Button(
+                        onClick = { navController.navigate(Screen.Login.rout) },
+                        modifier = Modifier.padding(start = 8.dp)
+                    ) {
+                        Text(text = stringResource(R.string.logout))
+                    }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,

@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth)
+    implementation ("androidx.compose.runtime:runtime-livedata")
     testImplementation(libs.junit)
     implementation("androidx.navigation:navigation-compose:2.9.0")
     androidTestImplementation(libs.androidx.junit)

@@ -1,7 +1,6 @@
 package com.example.artgallery.theme
 
 
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,14 +21,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,22 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.artgallery.R
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpPage(navController: NavController, authViewModel: AuthViewModel) {
+fun SignUpPage(navController: NavController) {
     var emailInput by remember { mutableStateOf("") }
     var passwordInput by remember { mutableStateOf("") }
-    val authState = authViewModel.authState
-    val context = LocalContext.current
-
-    LaunchedEffect(authState.value) {
-        when(authState.value){
-            is AuthenticationState.Authenticate -> navController.navigate(Screen.MainScreen)
-            is AuthenticationState.Error -> Toast.makeText(context,(authState.value as AuthenticationState.Error).message,
-                Toast.LENGTH_SHORT).show()
-            else -> Unit
-        }
-    }
 
     Scaffold (
         topBar ={
@@ -101,8 +88,7 @@ fun SignUpPage(navController: NavController, authViewModel: AuthViewModel) {
 
             Spacer(modifier = Modifier.padding(20.dp))
 
-            ElevatedButton(onClick = {authViewModel.signup(emailInput, passwordInput)},
-                enabled = authState.value != AuthenticationState.Loading) {
+            ElevatedButton(onClick = {navController.navigate(Screen.MainScreen.rout)}) {
                 Text("Sign Up")
             }
             TextButton(onClick = {navController.navigate(Screen.Login.rout)}) {

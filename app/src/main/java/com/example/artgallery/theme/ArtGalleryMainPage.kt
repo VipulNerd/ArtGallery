@@ -19,12 +19,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-
-import androidx.compose.runtime.getValue
-
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
@@ -33,14 +27,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.artgallery.R
+import com.example.artgallery.viewmodel.ArtGalleryViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtGalleryLayout(navController: NavController) {
-    var currentImage by remember { mutableIntStateOf(1) }
+fun ArtGalleryLayout(navController: NavController, viewModel: ArtGalleryViewModel = viewModel()) {
+    val currentImage = viewModel.currentImage.intValue
 
     Scaffold(
         topBar = {
@@ -74,39 +70,27 @@ fun ArtGalleryLayout(navController: NavController) {
             color = MaterialTheme.colorScheme.background
         ) {
             when (currentImage) {
-                1 -> {
-                    ArtGalleryView(
-                        imageId = (R.drawable.image_),
-                        messageId = (R.string.image1_disc),
-                        nextImageId = {
-                            currentImage += 1
-                        },
-                        prevImageId = { if (currentImage > 1) currentImage -= 1 },
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-
-                2 -> {
-                    ArtGalleryView(
-                        imageId = (R.drawable.image2),
-                        messageId = (R.string.image2_disc),
-                        nextImageId = {
-                            currentImage += 1
-                        },
-                        prevImageId = { if (currentImage > 1) currentImage -= 1 },
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-
-                3 -> {
-                    ArtGalleryView(
-                        imageId = (R.drawable.iamge3),
-                        messageId = (R.string.image3_disc),
-                        nextImageId = {},
-                        prevImageId = { if (currentImage > 1) currentImage -= 1 },
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
+                1 -> ArtGalleryView(
+                    imageId = R.drawable.image_,
+                    messageId = R.string.image1_disc,
+                    nextImageId = viewModel::nextImage,
+                    prevImageId = viewModel::prevImage,
+                    modifier = Modifier.padding(16.dp)
+                )
+                2 -> ArtGalleryView(
+                    imageId = R.drawable.image2,
+                    messageId = R.string.image2_disc,
+                    nextImageId = viewModel::nextImage,
+                    prevImageId = viewModel::prevImage,
+                    modifier = Modifier.padding(16.dp)
+                )
+                3 -> ArtGalleryView(
+                    imageId = R.drawable.iamge3,
+                    messageId = R.string.image3_disc,
+                    nextImageId = {},
+                    prevImageId = viewModel::prevImage,
+                    modifier = Modifier.padding(16.dp)
+                )
 
             }
         }

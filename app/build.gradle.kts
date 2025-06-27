@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth)
     implementation ("androidx.compose.runtime:runtime-livedata")
+    implementation("com.google.android.material:material:1.10.0")
     testImplementation(libs.junit)
     implementation("androidx.navigation:navigation-compose:2.9.0")
     androidTestImplementation(libs.androidx.junit)

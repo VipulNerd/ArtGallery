@@ -13,14 +13,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,13 +40,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.artgallery.R
 import com.example.artgallery.viewmodel.ArtGalleryViewModel
+import kotlinx.coroutines.selects.select
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtGalleryLayout(navController: NavController, viewModel: ArtGalleryViewModel = viewModel()) {
     val currentImage = viewModel.currentImage.intValue
-
+    val currentTab = remember { mutableStateOf("Home") }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -48,20 +58,17 @@ fun ArtGalleryLayout(navController: NavController, viewModel: ArtGalleryViewMode
                         textAlign = TextAlign.Center
                     )
                 },
-                navigationIcon = {
-                    Button(
-                        onClick = { navController.navigate(Screen.Login.rout) },
-                        modifier = Modifier.padding(start = 8.dp)
-                    ) {
-                        Text(text = stringResource(R.string.logout))
-                    }
-                },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
 
             )
+        },
+        bottomBar = {
+            NavigationBar(currentTab = currentTab.value) { selectedTab ->
+                currentTab.value = selectedTab
+            }
         }
     ) { innerPadding ->
         Surface(
@@ -138,5 +145,40 @@ fun ArtGalleryView(imageId: Int,
     }
 }
 
+
+
+@Composable
+fun NavigationBar(
+    currentTab: String,
+    onTabPressed: (String) -> Unit
+) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer) {
+        listOf("Home", "Cart", "Account").forEach { tab ->
+            val iconRes = when (tab) {
+                "Home" -> R.drawable.home_24px
+                "Cart" -> R.drawable.add_shopping_cart_24px
+                "Account" -> R.drawable.logout_24px
+                else -> R.drawable.home_24px
+            }
+
+            NavigationBarItem(
+                selected = currentTab == tab,
+                onClick = { onTabPressed(tab) },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = iconRes),
+                        contentDescription = tab
+                    )
+                },
+                label = { Text(tab) },
+                alwaysShowLabel = true,
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    unselectedIconColor = Color.Gray
+                )
+            )
+        }
+    }
+}
 
 

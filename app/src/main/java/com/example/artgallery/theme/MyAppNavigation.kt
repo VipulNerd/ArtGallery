@@ -26,5 +26,6 @@ fun MyAppNavigation(){
                 navController
             )
         }
+        composable(Screen.CartScreen.rout) { CartScreenLayout(navController)}
     })
 }

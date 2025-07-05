@@ -25,7 +25,7 @@ import com.example.artgallery.viewmodel.ArtGalleryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtGalleryLayout(navController: NavController, viewModel: ArtGalleryViewModel = viewModel()) {
+fun ArtGalleryLayout(navController: NavController, viewModel: ArtGalleryViewModel = viewModel(), cartViewModel: CartViewModel) {
     val currentImage = viewModel.currentImage.intValue
     val currentTab = remember { mutableStateOf(BottomBarContent.HOME) }
     val navItems = listOf(
@@ -72,6 +72,7 @@ fun ArtGalleryLayout(navController: NavController, viewModel: ArtGalleryViewMode
                     messageId = R.string.image1_disc,
                     nextImageId = viewModel::nextImage,
                     prevImageId = viewModel::prevImage,
+                    onAddToCart = { cartViewModel.addItem(CartItem("Artwork 1", 1, 1000.0, R.drawable.image_)) },
                     modifier = Modifier.padding(16.dp)
                 )
                 2 -> ArtGalleryView(
@@ -79,6 +80,7 @@ fun ArtGalleryLayout(navController: NavController, viewModel: ArtGalleryViewMode
                     messageId = R.string.image2_disc,
                     nextImageId = viewModel::nextImage,
                     prevImageId = viewModel::prevImage,
+                    onAddToCart = { cartViewModel.addItem(CartItem("Artwork 2", 1, 2000.0, R.drawable.image2)) },
                     modifier = Modifier.padding(16.dp)
                 )
                 3 -> ArtGalleryView(
@@ -86,6 +88,7 @@ fun ArtGalleryLayout(navController: NavController, viewModel: ArtGalleryViewMode
                     messageId = R.string.image3_disc,
                     nextImageId = {},
                     prevImageId = viewModel::prevImage,
+                    onAddToCart = { cartViewModel.addItem(CartItem("Artwork 3", 1, 3000.0, R.drawable.iamge3)) },
                     modifier = Modifier.padding(16.dp)
                 )
 

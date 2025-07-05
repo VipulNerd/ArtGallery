@@ -33,6 +33,7 @@ fun ArtGalleryView(imageId: Int,
                    messageId:Int,
                    nextImageId:()->Unit,
                    prevImageId:()->Unit,
+                   onAddToCart: () -> Unit,
                    modifier: Modifier){
     Column(modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Top,
@@ -41,9 +42,10 @@ fun ArtGalleryView(imageId: Int,
             painter = painterResource(imageId),
             contentDescription = null,
             modifier = modifier
-                .height(250.dp).fillMaxWidth()
+                .height(250.dp)
+                .fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(.10.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = stringResource(messageId),
             modifier = modifier.padding(horizontal = 16.dp)
@@ -63,7 +65,10 @@ fun ArtGalleryView(imageId: Int,
             ){
                 Text(stringResource((R.string.next_button)))
             }
+        }
 
+        Button(onClick = onAddToCart) {
+            Text("Add to Cart")
         }
     }
 }
@@ -84,9 +89,24 @@ fun NavigationBar(
                 onClick = {
                     onTabPressed(tab.iconType)
                     when (tab.iconType) {
-                        BottomBarContent.HOME -> navController.navigate(Screen.MainScreen.rout)
-                        BottomBarContent.CART -> navController.navigate(Screen.CartScreen.rout)
-                        BottomBarContent.LOGOUT -> navController.navigate(Screen.Login.rout)
+                        BottomBarContent.HOME -> {
+                            navController.navigate(Screen.MainScreen.rout) {
+                                popUpTo(0)
+                                launchSingleTop = true
+                            }
+                        }
+                        BottomBarContent.CART -> {
+                            navController.navigate(Screen.CartScreen.rout) {
+                                popUpTo(0)
+                                launchSingleTop = true
+                            }
+                        }
+                        BottomBarContent.LOGOUT -> {
+                            navController.navigate(Screen.Login.rout) {
+                                popUpTo(0)
+                                launchSingleTop = true
+                            }
+                        }
                     }
                 },
                 icon = {

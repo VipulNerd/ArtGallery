@@ -5,5 +5,5 @@ sealed class Screen (val rout : String){
     object Signup : Screen("SignUp")
     object MainScreen: Screen("gallery")
     object CartScreen: Screen("Cart")
-
+    object Details: Screen("Details")
 }

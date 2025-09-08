@@ -1,5 +1,8 @@
 package com.example.artgallery.theme
 
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -107,7 +110,7 @@ fun NewEmail(
     keyboardOptions : KeyboardOptions,
     modifier: Modifier
 ){
-    TextField(
+    OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text (stringResource(id = email)) },
@@ -125,12 +128,13 @@ fun CreatePassword(
     keyboardOptions : KeyboardOptions,
     modifier: Modifier
 ){
-    TextField(
+    OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text (stringResource(id = password)) },
         keyboardOptions = keyboardOptions,
         singleLine = true,
-        modifier = modifier
+        modifier = modifier,
+        visualTransformation = PasswordVisualTransformation()
     )
 }
